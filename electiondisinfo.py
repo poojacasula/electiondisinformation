@@ -42,12 +42,12 @@ from wordcloud import WordCloud
 
 # tweets_df2 = pd.DataFrame(tweets_list2, columns=['Date', 'Tweet Id', 'Text', 'Username', 'Location', '#Retweets', '#Replies', '#Likes', '#QuoteTweets'])
 
-data_url = ("hammerandscorecard.csv")
+data_url = ("hammerscorecard2.csv")
 def load_data(nrows):
     data = pd.read_csv(data_url, nrows=nrows)
     return data
 
-tweets_df2 = load_data(2000)
+tweets_df2 = load_data(31976)
 
 tweets_df2['Date'] = pd.to_datetime(tweets_df2['Date'])
 
@@ -71,11 +71,11 @@ election_fraud = check_word_in_tweet('election fraud', tweets_df2)
 
 # Print proportion of tweets mentioning #python
 #print("Proportion of tweets:", np.sum(hammerandscorecard) / tweets_df2.shape[0])
-st. write('Total Tweets:', tweets_df2.shape[0])
+st. write('Total # of Tweets:', tweets_df2.shape[0])
 st.write("Proportion of tweets mentioning CIA:", np.sum(cia) / tweets_df2.shape[0])
 st.write("Proportion of tweets mentioning Trump:", np.sum(trump) / tweets_df2.shape[0])
 st.write("Proportion of tweets mentioning Fraud:", np.sum(fraud) / tweets_df2.shape[0])
-st.write("Num of Tweets mentioning:",np.sum(election_fraud), "Proportion of tweets mentioning Election Fraud:", np.sum(election_fraud) / tweets_df2.shape[0])
+st.write("Proportion of tweets mentioning Election Fraud:", np.sum(election_fraud) / tweets_df2.shape[0])
 
 
 
@@ -83,6 +83,42 @@ words = pd.DataFrame([np.sum(cia), np.sum(trump), np.sum(fraud), np.sum(election
 st.bar_chart(words)
 
 
+# highest = 0
+
+# for i,val in enumerate(tweets_df2['#Retweets']): 
+#     if val > highest: 
+#         highest = val 
+#         st.write(highest, tweets_df2['Text'][i])
+        
+    
+#Before CISA
+st.subheader('Before CISA debunk')
+Pre_start_date = tweets_df2['Date'][len(tweets_df2['Date'])-1]
+#start_date = '2020-06-29 18:39:43+00:00'
+Pre_end_date = '2020-11-07 16:29:01+00:00'
+Pre_end_date = pd.to_datetime(Pre_end_date)
+
+mask = (tweets_df2['Date'] >=Pre_start_date) & (tweets_df2['Date']<=Pre_end_date)
+temp = tweets_df2.loc[mask]
+index = temp.index
+number_of_rows = len(index)
+st.dataframe(tweets_df2[mask])
+st.write('Total # of Tweets:', number_of_rows)
+
+
+#After CISA
+st.subheader('After CISA debunk')
+Post_start_date = Pre_end_date
+#start_date = '2020-06-29 18:39:43+00:00'
+Post_end_date = tweets_df2['Date'][0]
+Post_end_date = pd.to_datetime(Post_end_date)
+
+mask2 = (tweets_df2['Date'] >=Post_start_date) & (tweets_df2['Date']<=Post_end_date)
+temp2 = tweets_df2.loc[mask2]
+index2 = temp2.index
+number_of_rows2 = len(index2)
+st. dataframe(tweets_df2[mask2])
+st.write('Total # of Tweets:',number_of_rows2 )
 
 
 
@@ -103,7 +139,7 @@ positive = pd.DataFrame({
 })
 
 #print(tweets_df2[sentiment > 0.6]['Date'])
-st.table(positive)
+st.dataframe(positive)
 
 
 st.subheader('Negative Sentiment (aka < -0.6)')
@@ -112,7 +148,7 @@ negative = pd.DataFrame({
     'Text': tweets_df2[sentiment < -0.6]['Text'].values,
     'Sentiment': tweets_df2[sentiment < -0.6]['sentiment'].values
 })
-st.table(negative)
+st.dataframe(negative)
 # negative_woText = pd.DataFrame(tweets_df2[sentiment>0.6]['sentiment'].values, tweets_df2[sentiment > 0.6]['Date'].values )
 # 
 # st.line_chart(negative_woText)
