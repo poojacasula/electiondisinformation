@@ -117,8 +117,47 @@ mask2 = (tweets_df2['Date'] >=Post_start_date) & (tweets_df2['Date']<=Post_end_d
 temp2 = tweets_df2.loc[mask2]
 index2 = temp2.index
 number_of_rows2 = len(index2)
-st. dataframe(tweets_df2[mask2])
+st.dataframe(tweets_df2[mask2])
 st.write('Total # of Tweets:',number_of_rows2 )
+
+st.subheader('Tweet Info Before Intervention')
+# beforeCISA = pd.DataFrame(tweets_df2[mask]['#Retweets'].values, tweets_df2[mask]['Date'])
+# #beforeCISA2 = pd.DataFrame(tweets_df2[mask]['#Likes'].values, tweets_df2[mask]['Date'])
+# st.line_chart(beforeCISA)
+
+
+#Likes = pd.DataFrame({'# of Likes':tweets_df2[mask]['#Likes'].values, '# of Retweets':tweets_df2[mask]['#Retweets'].values})
+index = tweets_df2[mask]['Date']
+beforeCISA = pd.DataFrame({'# of Likes':tweets_df2[mask]['#Likes'].values,'# of Replies':tweets_df2[mask]['#Replies'].values, '# of Retweets': tweets_df2[mask]['#Retweets'].values, '# of QuoteTweets': tweets_df2[mask]['#QuoteTweets'].values}, index = index)
+
+st.line_chart(beforeCISA)
+
+# temp = pd.DataFrame({'#Likes':tweets_df2['#Likes'], '#Retweets':tweets_df2['#Retweets'], '#QuoteTweets': tweets_df2['#QuoteTweets']})
+# st.line_chart(temp)
+#st.line_chart(tweets_df2['#Likes'])
+
+
+
+
+
+
+# st.subheader('#Retweets Over Time After Intervention')
+# afterCISA = pd.DataFrame(tweets_df2[mask2]['#Retweets'].values, tweets_df2[mask2]['Date'])
+# st.line_chart(afterCISA)
+
+st.subheader ('Tweet Info After Intervention')
+index2 = tweets_df2[mask2]['Date']
+
+afterCISA = pd.DataFrame(
+    {'# of Likes':tweets_df2[mask2]['#Likes'].values,'# of Replies':tweets_df2[mask2]['#Replies'].values, '# of Retweets': tweets_df2[mask2]['#Retweets'].values, '# of QuoteTweets': tweets_df2[mask2]['#QuoteTweets'].values}
+    , index = index2)
+st.line_chart(afterCISA)
+
+
+
+
+
+
 
 
 
