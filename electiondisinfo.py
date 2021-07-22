@@ -155,18 +155,12 @@ st.line_chart(afterCISA)
 
 
 
-
-
-
-
-
-
 # Instantiate new SentimentIntensityAnalyzer
 sid = SentimentIntensityAnalyzer()
 
 # Generate sentiment scores
 sentiment_scores = tweets_df2['Text'].apply(sid.polarity_scores)
-data_load_state = st.text('Loading data...')
+# data_load_state = st.text('Loading data...')
 sentiment = sentiment_scores.apply(lambda x: x['compound'])
 tweets_df2['sentiment'] = sentiment
 
